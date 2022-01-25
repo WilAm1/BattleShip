@@ -1,4 +1,4 @@
-import { test, describe, expect } from "@jest/globals";
+import { test, describe, expect, beforeEach } from "@jest/globals";
 import GameBoard from "../gameBoard";
 import Ship from "../ship";
 /*
@@ -10,7 +10,10 @@ TODO Gameboards should be able to report whether or not all of their ships have 
 */
 
 describe("Game Board Factory Function", () => {
-  const gb = GameBoard();
+  let gb;
+  beforeEach(() => {
+    gb = GameBoard();
+  });
   const testObjArr = new Array(10).fill(new Array(10).fill(null));
   testObjArr[0][0] = true;
   testObjArr[0][1] = true;
@@ -26,17 +29,27 @@ describe("Game Board Factory Function", () => {
     expect(gb.body[0]).toHaveLength(10);
   });
 
-  //   test("Place a ship on coordinates", () => {
-  //     gb.body[0][0] = true;
-  //     gb.body[0][1] = true;
-  //     gb.body[0][2] = true;
-  //     expect(gb.body).toEqual(testObjArr);
-  //   });
-  test("Place a ship on Coordinates", () => {
+  test("Place a ship on coordinates", () => {
+    gb.body[0][0] = true;
+    gb.body[0][1] = true;
+    gb.body[0][2] = true;
+    expect(gb.body).toEqual(testObjArr);
+  });
+
+  test("Place a ship on Coordinates (horizontally) ", () => {
     gb.placeShip({ x: 0, y: 0, isVertical: false }, Ship());
     expect(gb.body[0]).toEqual([
       ...new Array(3).fill(true),
       ...new Array(7).fill(null),
+    ]);
+  });
+
+  test("Place a ship vertically", () => {
+    gb.placeShip({ x: 0, y: 1, isVertical: true }, Ship());
+    expect([gb.body[1][0], gb.body[2][0], gb.body[3][0]]).toEqual([
+      true,
+      true,
+      true,
     ]);
   });
 });
