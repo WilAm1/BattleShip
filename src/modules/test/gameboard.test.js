@@ -2,7 +2,7 @@ import { test, describe, expect, beforeEach } from "@jest/globals";
 import GameBoard from "../gameBoard";
 import Ship from "../ship";
 /*
-TODO Gameboards should be able to place ships at specific coordinates by calling the ship factory function.
+* Gameboards should be able to place ships at specific coordinates by calling the ship factory function.
 TODO Gameboards should have a receiveAttack function that takes a pair of coordinates, determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
 TODO Gameboards should keep track of missed attacks so they can display them properly.
 TODO Gameboards should be able to report whether or not all of their ships have been sunk.
@@ -51,5 +51,14 @@ describe("Game Board Factory Function", () => {
       true,
       true,
     ]);
+  });
+  test("Place multiple ships", () => {
+    gb.placeShip({ x: 0, y: 1, isVertical: true }, Ship());
+    expect(gb.placeShip({ x: 0, y: 1, isVertical: true }, Ship())).toBe(false);
+  });
+  test("Should be able to recieve attack", () => {
+    gb.placeShip({ x: 0, y: 0 }, Ship());
+    expect(gb.recieveAttack).not.toBeUndefined();
+    expect(gb.recieveAttack([0, 0])).toBe(true);
   });
 });
