@@ -7,7 +7,9 @@ describe("Game Board Factory Function", () => {
   beforeEach(() => {
     gb = GameBoard();
   });
-  const testObjArr = new Array(10).fill(new Array(10).fill(null));
+  const testObjArr = new Array(10)
+    .fill(null)
+    .map(() => new Array(10).fill(null));
   testObjArr[0][0] = true;
   testObjArr[0][1] = true;
   testObjArr[0][2] = true;
@@ -51,32 +53,32 @@ describe("Game Board Factory Function", () => {
   });
   test("Should be able to recieve attack", () => {
     gb.placeShip({ x: 0, y: 0 }, Ship());
-    expect(gb.recieveAttack).not.toBeUndefined();
-    expect(gb.recieveAttack([0, 0])).toBe(true);
-    expect(gb.recieveAttack([0, 0])).toBe(false);
+    expect(gb.receiveAttack).not.toBeUndefined();
+    expect(gb.receiveAttack([0, 0])).toBe(true);
+    expect(gb.receiveAttack([0, 0])).toBe(false);
   });
   test("Should record missed attacks", () => {
     gb.placeShip({ x: 0, y: 0 }, Ship());
-    gb.recieveAttack([5, 5]);
+    gb.receiveAttack([5, 5]);
     expect(gb.getMissedAttacks()).toEqual([[5, 5]]);
   });
   test("should report whether ships are sunked 1", () => {
     gb.placeShip({ x: 0, y: 0 }, Ship());
-    gb.recieveAttack([0, 0]);
-    gb.recieveAttack([0, 1]);
-    gb.recieveAttack([0, 2]);
+    gb.receiveAttack([0, 0]);
+    gb.receiveAttack([0, 1]);
+    gb.receiveAttack([0, 2]);
     expect(gb.areAllSunked()).toBe(true);
   });
 
   test("should report whether ships are sunked 2", () => {
     gb.placeShip({ x: 0, y: 0 }, Ship());
     gb.placeShip({ x: 4, y: 0 }, Ship());
-    gb.recieveAttack([0, 0]);
-    gb.recieveAttack([0, 1]);
-    gb.recieveAttack([0, 2]);
-    gb.recieveAttack([0, 4]);
-    gb.recieveAttack([0, 5]);
-    gb.recieveAttack([0, 6]);
+    gb.receiveAttack([0, 0]);
+    gb.receiveAttack([0, 1]);
+    gb.receiveAttack([0, 2]);
+    gb.receiveAttack([0, 4]);
+    gb.receiveAttack([0, 5]);
+    gb.receiveAttack([0, 6]);
     expect(gb.areAllSunked()).toBe(true);
   });
 });

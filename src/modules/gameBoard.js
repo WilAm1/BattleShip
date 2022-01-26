@@ -1,5 +1,8 @@
+const SIZE = 10;
+
 export default function GameBoard() {
-  const body = new Array(10).fill(new Array(10).fill(null));
+  // Fills 100 cells with null. Map is important in order to create new array and not just a reference
+  const body = new Array(SIZE).fill(null).map(() => new Array(SIZE).fill(null));
   const _shipArray = [];
   const _missedAttacks = [];
 
@@ -24,7 +27,7 @@ export default function GameBoard() {
     return true;
   };
 
-  const recieveAttack = (coor) => {
+  const receiveAttack = (coor) => {
     const [row, col] = coor;
     // check if already been placed/missed same spot
     if (_missedAttacks.includes(coor)) return false;
@@ -52,5 +55,5 @@ export default function GameBoard() {
     return _shipArray.every(({ ship }) => ship.isSunk());
   };
 
-  return { body, placeShip, recieveAttack, getMissedAttacks, areAllSunked };
+  return { body, placeShip, receiveAttack, getMissedAttacks, areAllSunked };
 }
