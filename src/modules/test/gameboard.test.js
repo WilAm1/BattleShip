@@ -1,13 +1,6 @@
 import { test, describe, expect, beforeEach } from "@jest/globals";
 import GameBoard from "../gameBoard";
 import Ship from "../ship";
-/*
-* Gameboards should be able to place ships at specific coordinates by calling the ship factory function.
-TODO Gameboards should have a receiveAttack function that takes a pair of coordinates, determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
-TODO Gameboards should keep track of missed attacks so they can display them properly.
-TODO Gameboards should be able to report whether or not all of their ships have been sunk.
-
-*/
 
 describe("Game Board Factory Function", () => {
   let gb;
@@ -60,5 +53,30 @@ describe("Game Board Factory Function", () => {
     gb.placeShip({ x: 0, y: 0 }, Ship());
     expect(gb.recieveAttack).not.toBeUndefined();
     expect(gb.recieveAttack([0, 0])).toBe(true);
+    expect(gb.recieveAttack([0, 0])).toBe(false);
+  });
+  test("Should record missed attacks", () => {
+    gb.placeShip({ x: 0, y: 0 }, Ship());
+    gb.recieveAttack([5, 5]);
+    expect(gb.getMissedAttacks()).toEqual([[5, 5]]);
+  });
+  test("should report whether ships are sunked 1", () => {
+    gb.placeShip({ x: 0, y: 0 }, Ship());
+    gb.recieveAttack([0, 0]);
+    gb.recieveAttack([0, 1]);
+    gb.recieveAttack([0, 2]);
+    expect(gb.areAllSunked()).toBe(true);
+  });
+
+  test("should report whether ships are sunked 2", () => {
+    gb.placeShip({ x: 0, y: 0 }, Ship());
+    gb.placeShip({ x: 4, y: 0 }, Ship());
+    gb.recieveAttack([0, 0]);
+    gb.recieveAttack([0, 1]);
+    gb.recieveAttack([0, 2]);
+    gb.recieveAttack([0, 4]);
+    gb.recieveAttack([0, 5]);
+    gb.recieveAttack([0, 6]);
+    expect(gb.areAllSunked()).toBe(true);
   });
 });
