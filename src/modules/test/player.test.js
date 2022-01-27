@@ -18,9 +18,7 @@ describe("Player Test", () => {
     dummyGB = GameBoard();
     dummyGB.placeShip({ x: 0, y: 0 }, dummyShip);
   });
-  // test("Initialize Player", () => {
-  //   expect(p1).toEqual(new Player("p1", false));
-  // });
+
   test("Attack Enemy", () => {
     // Y and X (row and column)
     p1.attackEnemy([0, 0], bot);

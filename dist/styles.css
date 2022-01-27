@@ -1,0 +1,33 @@
+* {
+  box-sizing: inherit;
+}
+body {
+  box-sizing: border-box;
+}
+main {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.board {
+  width: 350px;
+  height: 350px;
+  background-color: antiquewhite;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 2px;
+}
+.cell {
+  background-color: rgb(70, 99, 194);
+}
+.cell.disabled {
+  background-color: black;
+  pointer-events: none;
+}
+.cell:hover {
+  opacity: 0.7;
+}
+
+.cell.disabled.isShip {
+  background-color: white;
+}

@@ -10,32 +10,35 @@ export default class Player {
     // generate ships
     this.gb.placeShip({ x: 0, y: 0 }, new Ship());
     if (this.isComputer) {
-      this.generateMoves();
+      this.#possibleMoves = this.generateMoves(this.gb.body.length);
     }
   }
   get possibleMoves() {
     return this.#possibleMoves;
   }
-  generateMoves() {
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        this.#possibleMoves.push([i, j]);
+  generateMoves(len) {
+    const array = [];
+    for (let i = 0; i < len; i++) {
+      for (let j = 0; j < len; j++) {
+        array.push([i, j]);
       }
     }
+    return array;
   }
-  attackEnemy(coord, enemyShip) {
+  attackEnemy(coord, enemy) {
     // attack the enemy ship
-    enemyShip.gb.receiveAttack(coord);
+    return enemy.gb.receiveAttack(coord);
   }
-  attackRandomly(enemyShip) {
+  attackRandomly(enemy) {
     if (!this.isComputer) return [];
     // Picks a random number from the list and removes it
     const randInt = Math.floor(Math.random() * this.#possibleMoves.length);
     const [coord] = this.#possibleMoves.splice(randInt, 1);
-    this.attackEnemy(coord, enemyShip);
-    return coord;
+    const success = this.attackEnemy(coord, enemy);
+    return { coord, hit: success };
   }
   isGameOver() {
-    // If there is no moves left
+    // If there are no moves left
+    return !this.#possibleMoves.length;
   }
 }
