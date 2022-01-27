@@ -1,4 +1,3 @@
-const SIZE = 10;
 const generateBoard = (board, cb) => {
   // * generates a grid Board
   const array = [];
@@ -7,6 +6,7 @@ const generateBoard = (board, cb) => {
       const cell = document.createElement("div");
       cell.dataset.coordinates = JSON.stringify([rowIdx, colIdx]);
       cell.classList.add("cell");
+      cell.classList.add("active");
       if (cb) {
         cell.addEventListener("click", cb);
       }

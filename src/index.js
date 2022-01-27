@@ -1,4 +1,3 @@
-console.log("hello world!!");
-import game from "./modules/game";
+import gameLoop from "./modules/game";
 
-game();
+window.addEventListener("DOMContentLoaded", gameLoop);
