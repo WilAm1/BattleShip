@@ -2,7 +2,7 @@ import GameBoard from "./gameBoard";
 import Ship from "./ship";
 
 export default class Player {
-  possibleMoves = [];
+  #possibleMoves = [];
   constructor(name, isComputer) {
     this.name = name;
     this.isComputer = isComputer;
@@ -13,10 +13,13 @@ export default class Player {
       this.generateMoves();
     }
   }
+  get possibleMoves() {
+    return this.#possibleMoves;
+  }
   generateMoves() {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        this.possibleMoves.push([i, j]);
+        this.#possibleMoves.push([i, j]);
       }
     }
   }
@@ -25,9 +28,10 @@ export default class Player {
     enemyShip.gb.receiveAttack(coord);
   }
   attackRandomly(enemyShip) {
+    if (!this.isComputer) return [];
     // Picks a random number from the list and removes it
-    const randInt = Math.floor(Math.random() * this.possibleMoves.length);
-    const [coord] = this.possibleMoves.splice(randInt, 1);
+    const randInt = Math.floor(Math.random() * this.#possibleMoves.length);
+    const [coord] = this.#possibleMoves.splice(randInt, 1);
     this.attackEnemy(coord, enemyShip);
     return coord;
   }

@@ -56,6 +56,7 @@ describe("Game Board Factory Function", () => {
     expect(gb.receiveAttack).not.toBeUndefined();
     expect(gb.receiveAttack([0, 0])).toBe(true);
     expect(gb.receiveAttack([0, 0])).toBe(false);
+    expect;
   });
   test("Should record missed attacks", () => {
     gb.placeShip({ x: 0, y: 0 }, Ship());

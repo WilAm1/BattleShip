@@ -5,6 +5,7 @@ export default function GameBoard() {
   const body = new Array(SIZE).fill(null).map(() => new Array(SIZE).fill(null));
   const _shipArray = [];
   const _missedAttacks = [];
+  const _hitAttacks = [];
 
   const shipCoordinates = (col, row, isVertical, length) => {
     const arr = [];
@@ -30,7 +31,10 @@ export default function GameBoard() {
   const receiveAttack = (coor) => {
     const [row, col] = coor;
     // check if already been placed/missed same spot
-    if (_missedAttacks.includes(coor)) return false;
+    if (_missedAttacks.filter(([y, x]) => y === row && x === col).length)
+      return false;
+    if (_hitAttacks.filter(([y, x]) => y === row && x === col).length)
+      return false;
     // record the coordinate of missed shot
     if (!body[row][col]) {
       _missedAttacks.push([row, col]);
@@ -46,7 +50,9 @@ export default function GameBoard() {
         }
       })
     );
-    return shipObject.ship.hit(index);
+    _hitAttacks.push(coor);
+    shipObject.ship.hit(index);
+    return true;
   };
 
   const getMissedAttacks = () => _missedAttacks;
