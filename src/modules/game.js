@@ -91,16 +91,13 @@ const openingModal = (player, board) => {
   rotate.addEventListener("click", () => {
     shipElements.forEach((ship) => {
       ship.classList.toggle("vertical");
-      ship.dataset.isVertical = ship.dataset.isVertical ? 0 : 1;
+      ship.dataset.isVertical = Number(ship.dataset.isVertical) ? 0 : 1;
     });
   });
 
-  // TODO HOVER it to the GameBoard
-  // TODO on drag-end Place the ship on the Board
-  // Add function that will populate ships on the player side!
-  // Must be able to display the ships
-  // Ship names
-  // Populate with predetermined coordinates
+  // TODO Add function that will populate ships on the player side! Make it remove the ship
+  // TODO Ship names and Instruction on Modal Content
+  // TODO Populate Computer with random ships
 
   const gb = generateBoard(player.gb.body);
   gb.forEach((cell) => {
@@ -133,7 +130,6 @@ const openingModal = (player, board) => {
         },
         new Ship(length)
       );
-      console.log(possibeCoordinates);
       if (isShipSuccessful) {
         const myCoord = gb.filter((cell) => {
           const [y, x] = JSON.parse(cell.dataset.coordinates);
@@ -146,7 +142,6 @@ const openingModal = (player, board) => {
         // Dispplay the ships
         myCoord.forEach((ship) => {
           ship.style.backgroundColor = "white";
-          console.log(ship);
           board.find(
             (mainShip) =>
               mainShip.dataset.coordinates === ship.dataset.coordinates
