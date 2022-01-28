@@ -7,6 +7,7 @@ const generateBoard = (board, cb) => {
       cell.dataset.coordinates = JSON.stringify([rowIdx, colIdx]);
       cell.classList.add("cell");
       cell.classList.add("active");
+      cell.draggable = false;
       if (cb) {
         cell.addEventListener("click", cb);
       }
