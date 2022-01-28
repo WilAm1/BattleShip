@@ -7,8 +7,6 @@ export default class Player {
     this.name = name;
     this.isComputer = isComputer;
     this.gb = new GameBoard();
-    // generate ships
-    this.gb.placeShip({ x: 0, y: 0 }, new Ship());
     if (this.isComputer) {
       this.#possibleMoves = this.generateMoves(this.gb.body.length);
     }
