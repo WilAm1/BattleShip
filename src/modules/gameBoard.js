@@ -19,7 +19,8 @@ export default function GameBoard() {
     const coordinates = shipCoordinates(col, row, isVertical, ship.length);
     // * Check if there is already another ship there
     const isAvailable = coordinates.every(
-      ([y, x]) => !body[y][x] && body[y][x] !== undefined
+      ([y, x]) =>
+        body[y] !== undefined && body[y][x] !== undefined && !body[y][x]
     );
     if (!isAvailable) return false;
     coordinates.forEach((coord) => {
