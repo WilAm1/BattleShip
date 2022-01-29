@@ -1,8 +1,8 @@
 /* 
 * Refactor (Marking functions)
 * Add Ending Game and remove alerts
-TODO Add Initialize ships
-TODO Display Own Ships
+* Add Initialize ships
+* Display Own Ships
 TODO Add Randomize enemy ships
 TODO Inherit Player Class Computer Class
 */
@@ -66,17 +66,16 @@ const openingModal = (player, board) => {
   modal.innerHTML = `
   <div class="modal-content">
   <p>Welcome to Battleship</p>
-  <span></span>
   <div class="wrapper">
     <div class="mini-gameboard"></div>
     <div class="ships">
+        <p>Place your ships by dragging and dropping it into the board</p>
         <button>Rotate 🔃</button>
     </div>
   </div>
   </div>
   `;
   const shipsContainer = modal.querySelector(".ships");
-  // TODO Add draggable Ships
   const ships = {
     Carrier: 5,
     Battleship: 4,
@@ -95,23 +94,26 @@ const openingModal = (player, board) => {
     });
   });
 
-  // TODO Add function that will populate ships on the player side! Make it remove the ship
-  // TODO Ship names and Instruction on Modal Content
-  // TODO Populate Computer with random ships
+  // * Add function that will populate ships on the player side! Make it remove the ship
+  // * (Partial) Ship names and Instruction on Modal Content
+  // * If there are no ships left, Remove the Modal Content and Start the Game!
+  // TODO Populate Computer Board with random ships
+  // TODO Refactor!
 
   const gb = generateBoard(player.gb.body);
   gb.forEach((cell) => {
     cell.addEventListener("dragenter", (e) => {
-      e.target.style.backgroundColor = "green";
+      e.target.style.opacity = 0.5;
     });
     cell.addEventListener("dragleave", (e) => {
-      e.target.style.backgroundColor = "";
+      e.target.style.opacity = 1;
     });
     cell.addEventListener("dragover", (e) => {
       e.preventDefault();
     });
     cell.addEventListener("drop", (e) => {
       e.preventDefault();
+      e.target.style.opacity = 1;
       const [y, x] = JSON.parse(e.target.dataset.coordinates);
       let {
         shipName,
@@ -130,28 +132,38 @@ const openingModal = (player, board) => {
         },
         new Ship(length)
       );
-      if (isShipSuccessful) {
-        const myCoord = gb.filter((cell) => {
-          const [y, x] = JSON.parse(cell.dataset.coordinates);
-          for (const [row, col] of possibeCoordinates) {
-            if (row === y && col === x) {
-              return cell;
-            }
+      if (!isShipSuccessful) return;
+      const myCoord = gb.filter((cell) => {
+        const [y, x] = JSON.parse(cell.dataset.coordinates);
+        for (const [row, col] of possibeCoordinates) {
+          if (row === y && col === x) {
+            return cell;
           }
-        });
-        // Dispplay the ships
-        myCoord.forEach((ship) => {
-          ship.style.backgroundColor = "white";
-          board.find(
-            (mainShip) =>
-              mainShip.dataset.coordinates === ship.dataset.coordinates
-          ).style.backgroundColor = "white";
-        });
+        }
+      });
+      // Dispplay the ships
+      myCoord.forEach((ship) => {
+        ship.style.backgroundColor = "white";
+        board.find(
+          (mainShip) =>
+            mainShip.dataset.coordinates === ship.dataset.coordinates
+        ).style.backgroundColor = "white";
+      });
+
+      // Removes the Ship
+      const shipNode = shipsContainer.querySelector(
+        `[data-ship-name="${shipName}"`
+      );
+      shipNode.remove();
+      // Check if Ships are still present on ship
+      if (!shipsContainer.querySelector(".ship")) {
+        modal.remove();
       }
     });
   });
   modal.querySelector(".mini-gameboard").append(...gb);
   document.body.appendChild(modal);
+  // TODO Make the Placement of Random ships on Computer Board!
 };
 
 const endGame = (playerWin) => {
