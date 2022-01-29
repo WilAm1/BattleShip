@@ -1,5 +1,4 @@
 /* 
-TODO Finish up the UI
 TODO Refactor
 */
 
@@ -20,7 +19,7 @@ const createModal = () => {
 const onDrag = (e) => {
   const message = JSON.stringify(e.target.dataset);
   e.dataTransfer.setData("text/plain", message);
-  e.target.style.opacity = 0.5;
+  e.target.style.opacity = 0.3;
 };
 
 const onDragEnd = (e) => {
@@ -80,12 +79,16 @@ const openingModal = (player, board, computer) => {
   const modal = createModal();
   modal.innerHTML = `
   <div class="modal-content">
-  <p>Welcome to Battleship</p>
+  <h2>WELCOME TO BATTLESHIP</h2>
   <div class="wrapper">
     <div class="mini-gameboard"></div>
-    <div class="ships">
-        <p>Place your ships by dragging and dropping it into the board</p>
+    <div class="ships-wrapper">
+      <div class="instruction">
+        <p>PLACE YOUR SHIPS BY DRAGGING AND DROPPING IT INTO THE BOARD</p>
         <button>Rotate 🔃</button>
+      </div>
+      <div class="ships">
+      </div>
     </div>
   </div>
   </div>
@@ -107,7 +110,7 @@ const openingModal = (player, board, computer) => {
   const gb = generateBoard(player.gb.body);
   gb.forEach((cell) => {
     cell.addEventListener("dragenter", (e) => {
-      e.target.style.opacity = 0.5;
+      e.target.style.opacity = 0;
     });
     cell.addEventListener("dragleave", (e) => {
       e.target.style.opacity = 1;
@@ -149,12 +152,14 @@ const openingModal = (player, board, computer) => {
 
       // Display the ships
       myCoord.forEach((ship) => {
-        ship.style.backgroundColor = "white";
+        ship.classList.add("isShip");
         // Displays the ships on the main gameBoard
-        board.find(
-          (mainShip) =>
-            mainShip.dataset.coordinates === ship.dataset.coordinates
-        ).style.backgroundColor = "white";
+        board
+          .find(
+            (mainShip) =>
+              mainShip.dataset.coordinates === ship.dataset.coordinates
+          )
+          .classList.add("isShip");
       });
 
       // Removes the Ship
@@ -180,7 +185,7 @@ const endGame = (playerWin) => {
   const modal = createModal();
   modal.innerHTML = `
      <div class="modal-content">
-     <p>${playerWin ? "You wins!" : "Computer wins!"}</p>
+     <p>${playerWin ? "Player wins!" : "Computer wins!"}</p>
      <button>Play Again</button>
    </div>
      `;
@@ -201,32 +206,28 @@ const markCell = (cell, isShip) => {
 };
 
 const gameLoop = () => {
-  const p1 = new Player("p1");
+  const player = new Player("player");
   const bot = new Player("bot", true);
-  const newBoard = generateBoard(p1.gb.body);
-  openingModal(p1, newBoard, bot);
-
-  //   p1.gb.placeShip({ x: 0, y: 0 }, new Ship());
-  //   bot.gb.placeShip({ x: 1, y: 1 }, new Ship());
-
+  const newBoard = generateBoard(player.gb.body);
+  openingModal(player, newBoard, bot);
   const onCellClick = function () {
     const clickedCoord = JSON.parse(this.dataset.coordinates);
     // Returns bool ship is hit
-    const success = p1.attackEnemy(clickedCoord, bot);
+    const success = player.attackEnemy(clickedCoord, bot);
     markCell(this, success);
 
     if (bot.gb.areAllSunked() || bot.isGameOver()) {
       endGame(true);
     }
 
-    // Enemy Comp
-    const { coord: enemyCoord, hit: enemySuccess } = bot.attackRandomly(p1);
+    // Enemy Computer
+    const { coord: enemyCoord, hit: enemySuccess } = bot.attackRandomly(player);
     const attackedCell = newBoard.find(
       (div) => div.dataset.coordinates === JSON.stringify(enemyCoord)
     );
 
     markCell(attackedCell, enemySuccess);
-    if (p1.gb.areAllSunked() || hasNoMovesLeft(this)) {
+    if (player.gb.areAllSunked() || hasNoMovesLeft(this)) {
       endGame(false);
     }
   };
