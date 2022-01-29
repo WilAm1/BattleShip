@@ -90,8 +90,13 @@ main {
   gap: 2em;
   width: 50%;
 }
-.ships button {
+.ships button,
+.ships p {
   position: absolute;
   top: 0;
   left: 50%;
+}
+.ships p {
+  left: 0;
+  top: 10%;
 }
