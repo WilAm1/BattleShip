@@ -31,7 +31,7 @@ describe("Player Test", () => {
   });
   test("Attack Randomly", () => {
     const coord = bot.attackRandomly(p1);
-    expect(coord.length).toBe(2);
+    expect(coord.coord.length).toBe(2);
     expect(bot.possibleMoves.length).toEqual(99);
     expect(p1.attackRandomly(bot)).toEqual([]);
   });

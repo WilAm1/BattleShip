@@ -1,5 +1,4 @@
 import GameBoard from "./gameBoard";
-import Ship from "./ship";
 
 export default class Player {
   #possibleMoves = [];

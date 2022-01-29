@@ -9,7 +9,7 @@ const generateBoard = (board, cb) => {
       cell.classList.add("active");
       cell.draggable = false;
       if (cb) {
-        cell.addEventListener("click", cb);
+        cell.addEventListener("click", cb, { once: true });
       }
       array.push(cell);
     });
